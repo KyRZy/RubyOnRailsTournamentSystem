@@ -171,10 +171,11 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  bcrypt
   bootstrap-sass
   byebug
   coffee-rails (~> 4.2)
-  devise (= 4.2.1)
+  devise
   jbuilder (~> 2.5)
   jquery-rails
   pg (~> 0.18)

@@ -22,8 +22,10 @@ gem 'coffee-rails', '~> 4.2'
 # gem 'therubyracer', platforms: :ruby
 
 # Devise + Bootstrap
-gem 'devise', '4.2.1'
+gem 'devise'
 gem 'bootstrap-sass'
+
+gem 'bcrypt', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

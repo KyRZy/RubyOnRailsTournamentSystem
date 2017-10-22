@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RubyOnRailsTournamentSystem</title>
+    <title><%= yield(:title) %> | RubyOnRailsTournamentSystem</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -10,7 +10,7 @@
 
   <body>
 	<%= render "layouts/header" %>
-    <div class="container">
+    <div class="container-fluid">
 		<% flash.each do |key, value| %>
 			<div class="<%= flash_class(key) %>">
 				<%= value %>

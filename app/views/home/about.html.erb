@@ -1,0 +1,63 @@
+<% provide(:title, "About project") %>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-1 col-lg-10 col-lg-offset-1">
+  <h1>About page</h1>
+  <h3>Purpose of the project</h3>
+  <ul>
+    Goal of&nbsp;this project is to&nbsp;make website allowing to&nbsp;create and participate in&nbsp;tournaments
+    with not very popular systems:
+    <li><a href="https://en.wikipedia.org/wiki/Swiss-system_tournament" target="_blank"><strong>Swiss system</strong></a> - group stage system,
+      which is used for qualifications and sometimes to&nbsp;set seeds of&nbsp;participating teams. With proper seeding, this system seems to&nbsp;be
+      fair for everyone and makes it almost impossible to&nbsp;qualify for teams that upseted in&nbsp;a&nbsp;match, where they were underdogs.
+      <ul>Even with complicated graph used to&nbsp;show tournament status, rules are pretty simple:
+        <li>Win 3 matches to&nbsp;qualify</li>
+        <li>Lose 3 matches to&nbsp;be disqulified</li>
+        <li>All matches are between teams with the same record (i.e. team with 1 win and 2 losses can play only teams with same amount of&nbsp;wins and losses)</li>
+        <li>Teams can play each other only once</li>
+      </ul>
+    </li>
+    <li><a href="https://en.wikipedia.org/wiki/Double-elimination_tournament" target="_blank"><strong>Double-elimination system</strong></a> - playoff system, used in&nbsp;bowling, softball,
+       wrestling and curling. Similar to&nbsp;single-elimination system, but after losing one match, team is moved to&nbsp;lower bracket with a&nbsp;chance to&nbsp;comeback and reach the finals. 
+       This system makes it harder for weaker teams to&nbsp;upset. Even with one surprice win there's a&nbsp;chance that both teams will meet each other again in&nbsp;finals or lower bracket.
+       When single-elimination tournament would stop after finals, double-elimination waits for lower bracket to&nbsp;end and then both winners of&nbsp;upper and lower bracket play in&nbsp;championship finals. 
+       Depending on&nbsp;game and tournament organiser, most of&nbsp;the time winner of&nbsp;upper bracket have some kind of&nbsp;advantage. Most common way&nbsp;of&nbsp;it to&nbsp;give 1:0 score for upper bracket winners in best-of-3 finals, 
+       with means that team from lower bracket needs to&nbsp;win two matches to&nbsp;win whole tournament, when other team needs only one win. Sometimes giving 1:0 score from the start is too much 
+       (it can make finals too easy to&nbsp;predict), so&nbsp;instead of&nbsp;that, for example in video games, team without any loses can choose to&nbsp;be first or second in&nbsp;some kind of&nbsp;veto&nbsp;system, 
+       used to&nbsp;choose a&nbsp;map or playable characters.
+    </li>
+  </ul>
+  <h3>Used technology</h3>
+  <p>
+    Programming language: <a href="http://rubyonrails.org/" target="_blank">Ruby on Rails</a><br>
+    Other web technologies: HTML5, CSS3, javascript, <a href="http://coffeescript.org/" target="_blank">Coffeescript</a> (version of JQuery without brackets and forcing to&nbsp;use proper spacing), Ajax.<br>
+    Used gems: <a href="https://github.com/plataformatec/devise">Devise</a> (authentication system) and <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> (library with responsive grid system)<br>
+    Maybe gem that will be used: <a href="http://fabricjs.com/" target="_blank">Fabric.js</a> (canvas library for brackets)
+  </p>
+  <h3>ERD Diagram</h3>
+  <div style="overflow:auto;border:1px solid lightgrey">
+    <%= image_tag  "RubyOnRailsTournamentSystem_diagram_bazy_danych.png", style: "display:block;margin:auto"  %>
+  </div>
+  <h3>Class Diagram</h3>
+  <div style="overflow:auto;border:1px solid lightgrey">
+    <%= image_tag  "RubyOnRailsTournamentSystem_diagram_klas.png", style: "display:block;margin:auto"  %>
+  </div>
+  <h3>List of functionalities</h3>
+  <h4>Unregistered user can:</h4>
+  <ul>
+    <li>create an account and log onto it</li>
+    <li>browse through list of tournaments</li>
+    <li>browse through existing tournaments</li>
+  </ul>
+  <h4>Registered user can:</h4>
+  <ul>
+    <li>create tournaments</li>
+    <li>choose between two tournament systems</li>
+    <li>choose if matches should be generated based on seeding or randomly</li>
+    <li>set score in matches</li>
+    <li>create one team</li>
+  </ul>
+  <h4>Registered user with a team can:</h4>
+  <ul>
+    <li>join existing tournaments</li>
+  </ul>
+</div>

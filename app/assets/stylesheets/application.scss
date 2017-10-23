@@ -1,2 +1,20 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+main.container-fluid{
+	margin-bottom: 50px;
+}
+
+@media (max-width: 768px){
+	.navbar .navbar-collapse {
+		text-align: center;
+
+		.nav.navbar-nav{
+			margin: 0;
+		}
+		
+		ul:not(.navbar-right) li, ul.navbar-right li:not(:last-child) {
+			border-bottom: 1px solid lightgrey;
+		}
+	}
+}

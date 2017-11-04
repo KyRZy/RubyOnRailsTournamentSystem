@@ -1,5 +1,7 @@
-class Team < ApplicationRecord
-    has_one :leader, :class_name => 'User' , :foreign_key => "leader_id"
+require 'bcrypt'
 
-    belongs_to :user
+class Team < ApplicationRecord
+    has_one :leader, :class_name => 'User'
+
+    belongs_to :user, :class_name => 'User', optional: true
 end

@@ -16,6 +16,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
       <% if user_signed_in? %>
+        <li><p class="navbar-text">Hello <strong><%= current_user.username %>!</strong></p></li>
         <li><%= link_to "Change password", edit_user_registration_path %> </li>
         <li><%= link_to destroy_user_session_path, :method => :delete do %>Log out <span class="glyphicon glyphicon-log-out"> <% end %></li>
       <% else %>

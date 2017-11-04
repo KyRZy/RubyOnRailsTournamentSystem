@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171104175756) do
+ActiveRecord::Schema.define(version: 20171104201320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,10 +38,11 @@ ActiveRecord::Schema.define(version: 20171104175756) do
 
   create_table "teams", force: :cascade do |t|
     t.string   "name"
-    t.string   "password"
+    t.string   "encrypted_password"
     t.integer  "leader_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "salt"
   end
 
   create_table "tournament_types", force: :cascade do |t|
@@ -74,9 +75,11 @@ ActiveRecord::Schema.define(version: 20171104175756) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.integer  "team_id"
+    t.string   "username"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
     t.index ["team_id"], name: "index_users_on_team_id", using: :btree
+    t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
   end
 
   add_foreign_key "participants", "teams"

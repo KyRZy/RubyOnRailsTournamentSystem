@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  participant_a_id: 1
+  participant_b_id: 1
+  participant_a_score: 1
+  participant_b_score: 1
+  stage: 1
+  finished: false
+
+two:
+  participant_a_id: 1
+  participant_b_id: 1
+  participant_a_score: 1
+  participant_b_score: 1
+  stage: 1
+  finished: false

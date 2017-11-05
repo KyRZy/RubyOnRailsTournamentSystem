@@ -2,4 +2,18 @@
 
 <%= render 'form', team: @team %>
 
+<h1>Join existing team</h1>
+<%= form_tag("/join_existing_team", method: "post") do %>
+  <div class="field">
+    <%= label_tag :name %>
+    <%= text_field_tag :name %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :password %>
+    <%= text_field_tag :password, nil, id: nil %>
+    <%= submit_tag "Join" %>
+  </div>
+<% end %>
+
 <%= link_to 'Back', teams_path %>

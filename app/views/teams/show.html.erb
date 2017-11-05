@@ -5,15 +5,13 @@
   <%= @team.name %>
 </p>
 
-<p>
-  <strong>Password:</strong>
-  <%= @team.password %>
-</p>
-
-<p>
-  <strong>Leader:</strong>
-  <%= @team.leader_id %>
-</p>
-
+<strong>Team Members:</strong>
+<ul>
+  <li><strong><%= @team.leader.username %></strong></li>
+  <% @team.users.drop(0).each do |user| %>
+    <li><%= user.username %></li>
+  <% end %>
+</ul>
+  
 <%= link_to 'Edit', edit_team_path(@team) %> |
 <%= link_to 'Back', teams_path %>

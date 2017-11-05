@@ -27,7 +27,7 @@ class TeamsController < ApplicationController
     @team = Team.new(team_params)
     @team.leader_id = current_user.id
     @team.salt = BCrypt::Engine.generate_salt
-    @team.encrypted_password= BCrypt::Engine.hash_secret(team_params[:encrypted_password], @team.salt)
+    @team.encrypted_password= BCrypt::Engine.hash_secret(params[:password], @team.salt)
 
     Team.transaction do
       respond_to do |format|
@@ -66,18 +66,48 @@ end
   # DELETE /teams/1.json
   def destroy
     Team.transaction do
-      current_user.team = nil
-      current_user.inspect
-      if current_user.save
+      successfull_save = true
+
+      @team.users.each do |user|
+        user.team = nil
+        successfull_save = successfull_save and user.save
+      end
+      if successfull_save
         @team.destroy
         respond_to do |format|
           flash[:success] = 'Team was successfully destroyed.'
           format.html { redirect_to teams_url}
           format.json { head :no_content }
         end
-      else
-        puts "ASDASDASDASD"
       end
+    end
+  end
+
+  def join_existing_team
+    name = params[:name]
+    
+    if team = Team.where(name: name).first
+      puts team.encrypted_password
+      puts BCrypt::Engine.hash_secret(params[:password], team.salt)
+      if team.encrypted_password == BCrypt::Engine.hash_secret(params[:password], team.salt)
+        current_user.team_id = team.id
+        respond_to do |format|
+          if current_user.save
+            flash[:success] = 'You successfully joined the team.'
+            format.html { redirect_to root_url}
+            format.json { render :show, status: :created, location: @team }
+          else
+            format.html { render :new }
+            format.json { render json: @team.errors, status: :unprocessable_entity }
+          end
+        end
+      else
+        flash[:error] = 'Wrong password.'
+        redirect_to new_team_path
+      end
+    else
+      flash[:error] = 'Team does not exist.'
+      redirect_to new_team_path
     end
   end
 

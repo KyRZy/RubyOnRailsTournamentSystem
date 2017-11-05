@@ -12,28 +12,18 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :user_id %>
-    <%= f.number_field :user_id %>
-  </div>
-
-  <div class="field">
     <%= f.label :name %>
     <%= f.text_field :name %>
   </div>
 
   <div class="field">
     <%= f.label :tournament_type_id %>
-    <%= f.number_field :tournament_type_id %>
+    <%= f.collection_select(:tournament_type_id, TournamentType.all, :id, :name) %>
   </div>
 
   <div class="field">
     <%= f.label :start_date %>
     <%= f.datetime_select :start_date %>
-  </div>
-
-  <div class="field">
-    <%= f.label :finished %>
-    <%= f.check_box :finished %>
   </div>
 
   <div class="actions">

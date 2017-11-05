@@ -1,19 +1,30 @@
-<h1>New Team</h1>
 
-<%= render 'form', team: @team %>
+<div class="col-md-5">
+    <div class="panel panel-default">
+        <h1>Create new team</h1>
+        <%= render 'form', team: @team %>
+    </div>
+</div>
+<div class="col-md-2" id="or">
+    <h2><span class="glyphicon glyphicon-minus"></span>OR<span class="glyphicon glyphicon-minus"></span></h2>
+</div>
 
-<h1>Join existing team</h1>
-<%= form_tag("/join_existing_team", method: "post") do %>
-  <div class="field">
-    <%= label_tag :name %>
-    <%= text_field_tag :name %>
-  </div>
-
-  <div class="field">
-    <%= label_tag :password %>
-    <%= text_field_tag :password, nil, id: nil %>
-    <%= submit_tag "Join" %>
-  </div>
-<% end %>
-
-<%= link_to 'Back', teams_path %>
+<div class="col-md-5">
+        <div class="panel panel-default">
+            <h1>Join existing team</h1>
+            <%= form_tag("/join_existing_team", method: "post") do %>
+                <div class="form-group">
+                    <%= label_tag :name %>
+                    <%= text_field_tag :name, nil, id: nil, class: 'form-control' %>
+                </div>
+                
+                <div class="form-group">
+                    <%= label_tag :password %>
+                    <%= text_field_tag :password, nil, id: nil, class: 'form-control' %>
+                </div>
+                <div class="actions">
+                    <%= submit_tag 'Join team', class: 'btn btn-primary' %>
+                </div>
+                <% end %>
+        </div>
+    </div>

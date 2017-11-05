@@ -22,6 +22,7 @@
         <% else %>
           <li><%= link_to "My team", current_user.team %> </li>
         <% end %>
+        <li><%= link_to "Tournaments", tournaments_path %> </li>
         <li><%= link_to "Change password", edit_user_registration_path %> </li>
         <li><%= link_to destroy_user_session_path, :method => :delete do %>Log out <span class="glyphicon glyphicon-log-out"> <% end %></li>
       <% else %>

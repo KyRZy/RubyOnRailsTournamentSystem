@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+TournamentType.create(name: 'Single-elimination system')
+TournamentType.create(name: 'Double-elimination system')
+TournamentType.create(name: 'Swiss system')

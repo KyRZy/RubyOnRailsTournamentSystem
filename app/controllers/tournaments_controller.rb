@@ -25,7 +25,7 @@ class TournamentsController < ApplicationController
   # POST /tournaments.json
   def create
     @tournament = Tournament.new(tournament_params)
-
+    @tournament.user_id = current_user.id
     respond_to do |format|
       if @tournament.save
         format.html { redirect_to @tournament, notice: 'Tournament was successfully created.' }

@@ -8,7 +8,7 @@
 <strong>Team Members:</strong>
 <ul>
   <li><strong><%= @team.leader.username %></strong></li>
-  <% @team.users.drop(0).each do |user| %>
+  <% @team.users.drop(1).each do |user| %>
     <li><%= user.username %></li>
   <% end %>
 </ul>

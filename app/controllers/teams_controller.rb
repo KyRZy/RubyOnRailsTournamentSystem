@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 class TeamsController < ApplicationController
   before_action :set_team, only: [:show, :edit, :update, :destroy]
 
@@ -87,30 +89,35 @@ class TeamsController < ApplicationController
 
   def join_existing_team
     name = params[:name]
-    
-    if team = Team.where(name: name).first
-      puts team.encrypted_password
-      puts BCrypt::Engine.hash_secret(params[:password], team.salt)
-      if team.encrypted_password == BCrypt::Engine.hash_secret(params[:password], team.salt)
-        current_user.team_id = team.id
-        respond_to do |format|
-          if current_user.save
-            flash[:success] = 'You successfully joined the team.'
-            format.html { redirect_to root_url}
-            format.json { render :show, status: :created, location: @team }
-          else
-            format.html { render :new }
-            format.json { render json: @team.errors, status: :unprocessable_entity }
+    password = params[:password]
+
+    if password == params[:password_confirmation]
+      if team = Team.where(name: name).first
+        if team.encrypted_password == BCrypt::Engine.hash_secret(password, team.salt)
+          current_user.team_id = team.id
+          respond_to do |format|
+            if current_user.save
+              flash[:success] = 'You successfully joined the team.'
+              format.html { redirect_to team}
+              format.json { render :show, status: :created, location: team }
+            else
+              format.html { render :new }
+              format.json { render json: current_user.errors, status: :unprocessable_entity }
+            end
           end
+        else
+          flash[:error] = 'Wrong password.'
+          redirect_to new_team_path
         end
       else
-        flash[:error] = 'Wrong password.'
+        flash[:error] = 'Team does not exist.'
         redirect_to new_team_path
       end
     else
-      flash[:error] = 'Team does not exist.'
+      flash[:error] = 'Password and password confirmation don\'t match.'
       redirect_to new_team_path
     end
+
   end
 
   private

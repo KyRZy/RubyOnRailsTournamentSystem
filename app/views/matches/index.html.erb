@@ -18,8 +18,8 @@
   <tbody>
     <% @matches.each do |match| %>
       <tr>
-        <td><%= match.participant_a_id %></td>
-        <td><%= match.participant_b_id %></td>
+        <td><%= match.participant_a.team.name %></td>
+        <td><%= match.participant_b.team.name %></td>
         <td><%= match.participant_a_score %></td>
         <td><%= match.participant_b_score %></td>
         <td><%= match.stage %></td>
@@ -31,7 +31,6 @@
     <% end %>
   </tbody>
 </table>
-
 <br>
 
 <%= link_to 'New Match', new_match_path %>

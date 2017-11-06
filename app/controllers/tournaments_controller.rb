@@ -1,5 +1,13 @@
 class TournamentsController < ApplicationController
-  before_action :set_tournament, only: [:show, :edit, :update, :destroy, :join_tournament, :leave_tournament]
+  before_action :set_tournament, only: [:show, :edit, :update, :destroy, :join_tournament, :leave_tournament, :has_team?]
+  before_action :has_team?, only: [:join_tournament]
+
+  def has_team?
+    if current_user.team.nil?
+      flash[:error] = "You need to create/join team to join tournaments."
+      redirect_to tournaments_url
+    end
+  end
 
   # GET /tournaments
   # GET /tournaments.json
@@ -10,7 +18,7 @@ class TournamentsController < ApplicationController
   # GET /tournaments/1
   # GET /tournaments/1.json
   def show
-    if @tournament.participants.exists?(team_id: current_user.team.id)
+    if current_user.team.present? && @tournament.participants.exists?(team_id: current_user.team.id)
       @current_user_in_tournament = true
     else
       @current_user_in_tournament = false
@@ -33,7 +41,8 @@ class TournamentsController < ApplicationController
     @tournament.user_id = current_user.id
     respond_to do |format|
       if @tournament.save
-        format.html { redirect_to @tournament, notice: 'Tournament was successfully created.' }
+        flash[:success] = 'Tournament was successfully created.'
+        format.html { redirect_to @tournament}
         format.json { render :show, status: :created, location: @tournament }
       else
         format.html { render :new }
@@ -47,7 +56,8 @@ class TournamentsController < ApplicationController
   def update
     respond_to do |format|
       if @tournament.update(tournament_params)
-        format.html { redirect_to @tournament, notice: 'Tournament was successfully updated.' }
+        flash[:success] = 'Tournament was successfully updated.'
+        format.html { redirect_to @tournament}
         format.json { render :show, status: :ok, location: @tournament }
       else
         format.html { render :edit }
@@ -61,29 +71,40 @@ class TournamentsController < ApplicationController
   def destroy
     @tournament.destroy
     respond_to do |format|
-      format.html { redirect_to tournaments_url, notice: 'Tournament was successfully destroyed.' }
+      flash[:success] = 'Tournament was successfully destroyed.'
+      format.html { redirect_to tournaments_url}
       format.json { head :no_content }
     end
   end
 
   def join_tournament
-    participant = Participant.create(tournament_id: @tournament.id,team_id: current_user.team.id)
-    respond_to do |format|
-      if participant.save
-        flash[:success] = "Your team successfully join the tournament."
-        format.html { redirect_to @tournament}
-        format.json { render :show, status: :created, location: @tournament }
+    if @tournament.user != current_user
+      if @tournament.user.team != current_user.team
+        participant = Participant.create(tournament_id: @tournament.id,team_id: current_user.team.id)
+        respond_to do |format|
+          if participant.save
+            flash[:success] = "Your team successfully join the tournament."
+            format.html { redirect_to @tournament}
+            format.json { render :show, status: :created, location: @tournament }
+          else
+            format.html { render :new }
+            format.json { render json: @tournament.errors, status: :unprocessable_entity }
+          end
+        end 
       else
-        format.html { render :new }
-        format.json { render json: @tournament.errors, status: :unprocessable_entity }
-      end
+        flash[:error] = "You cannot join tournament created by your teammate."
+        redirect_to tournaments_url
+     end 
+    else
+      flash[:error] = 'You cannot join your own tournaments.'
+      redirect_to tournaments_url
     end
   end
 
   def leave_tournament
     Participant.where(tournament_id: @tournament.id,team_id: current_user.team.id).first.destroy
     respond_to do |format|
-      flash[:success] = "You successully left the tournament."
+      flash[:success] = 'You successully left the tournament.'
       format.html { redirect_to tournaments_url}
       format.json { head :no_content }
     end

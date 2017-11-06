@@ -15,8 +15,8 @@
   <tbody>
     <% @participants.each do |participant| %>
       <tr>
-        <td><%= participant.tournament %></td>
-        <td><%= participant.team %></td>
+        <td><%= participant.tournament.name %></td>
+        <td><%= participant.team.name %></td>
         <td><%= participant.seed %></td>
         <td><%= link_to 'Show', participant %></td>
         <td><%= link_to 'Edit', edit_participant_path(participant) %></td>

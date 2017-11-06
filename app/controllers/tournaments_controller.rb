@@ -1,5 +1,5 @@
 class TournamentsController < ApplicationController
-  before_action :set_tournament, only: [:show, :edit, :update, :destroy]
+  before_action :set_tournament, only: [:show, :edit, :update, :destroy, :join_tournament, :leave_tournament]
 
   # GET /tournaments
   # GET /tournaments.json
@@ -10,6 +10,11 @@ class TournamentsController < ApplicationController
   # GET /tournaments/1
   # GET /tournaments/1.json
   def show
+    if @tournament.participants.exists?(team_id: current_user.team.id)
+      @current_user_in_tournament = true
+    else
+      @current_user_in_tournament = false
+    end
   end
 
   # GET /tournaments/new
@@ -57,6 +62,29 @@ class TournamentsController < ApplicationController
     @tournament.destroy
     respond_to do |format|
       format.html { redirect_to tournaments_url, notice: 'Tournament was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  def join_tournament
+    participant = Participant.create(tournament_id: @tournament.id,team_id: current_user.team.id)
+    respond_to do |format|
+      if participant.save
+        flash[:success] = "Your team successfully join the tournament."
+        format.html { redirect_to @tournament}
+        format.json { render :show, status: :created, location: @tournament }
+      else
+        format.html { render :new }
+        format.json { render json: @tournament.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def leave_tournament
+    Participant.where(tournament_id: @tournament.id,team_id: current_user.team.id).first.destroy
+    respond_to do |format|
+      flash[:success] = "You successully left the tournament."
+      format.html { redirect_to tournaments_url}
       format.json { head :no_content }
     end
   end

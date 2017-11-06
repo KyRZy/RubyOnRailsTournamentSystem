@@ -1,8 +1,10 @@
-<p id="notice"><%= notice %></p>
+<p id="notice">
+  <%= notice %>
+</p>
 
 <p>
   <strong>User:</strong>
-  <%= @tournament.user_id %>
+  <%= @tournament.user.username %>
 </p>
 
 <p>
@@ -12,8 +14,19 @@
 
 <p>
   <strong>Tournament type:</strong>
-  <%= @tournament.tournament_type_id %>
+  <%= @tournament.tournament_type.name %>
 </p>
+
+<div>
+  <strong>Participants:</strong>
+  <ul>
+    <% @tournament.participants.each do |participant| %>
+      <li>
+        <%= participant.team.name %>
+      </li>
+    <% end %>
+  </ul>
+</div>
 
 <p>
   <strong>Start date:</strong>
@@ -24,6 +37,11 @@
   <strong>Finished:</strong>
   <%= @tournament.finished %>
 </p>
-
+<% if @current_user_in_tournament %>
+  <%= link_to 'Leave tournament', leave_tournament_path(@tournament), method: :post %>
+<% else %>
+  <%= link_to 'Join tournament', join_tournament_path(@tournament), method: :post %>
+<% end %>
+<br>
 <%= link_to 'Edit', edit_tournament_path(@tournament) %> |
 <%= link_to 'Back', tournaments_path %>

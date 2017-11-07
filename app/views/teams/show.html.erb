@@ -12,6 +12,8 @@
     <li><%= user.username %></li>
   <% end %>
 </ul>
-  
+<% if current_user.team == @team %>
+  <%= link_to 'Leave team', leave_team_path(@team), method: :post %><br>
+<% end %>
 <%= link_to 'Edit', edit_team_path(@team) %> |
 <%= link_to 'Back', teams_path %>

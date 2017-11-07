@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   root 'home#index'
 
   post 'join_existing_team' => 'teams#join_existing_team'
+  post 'team/:id/leave_team_path' => 'teams#leave_team', as: 'leave_team'
   post 'tournament/:id/join_tournament' => 'tournaments#join_tournament', as: 'join_tournament'
   post 'tournament/:id/leave_tournament' => 'tournaments#leave_tournament', as: 'leave_tournament'
 

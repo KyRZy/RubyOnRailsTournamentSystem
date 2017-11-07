@@ -118,6 +118,25 @@ class TeamsController < ApplicationController
     end
   end
 
+  def leave_team
+    if current_user.team = @team
+      current_user.team = nil
+      respond_to do |format|
+        if current_user.save
+          flash[:success] = 'You successfully left the team.'
+          format.html { redirect_to root_url}
+          format.json { render :show, status: :created, location: @team }
+        else
+          format.html { render :new }
+          format.json { render json: @team.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      flash[:error] = 'You cannot leave the team you\'re not a member of.'
+      redirect_to @team
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_team

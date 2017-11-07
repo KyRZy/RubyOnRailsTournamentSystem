@@ -7,13 +7,14 @@
       Remember to log in and create a team before joining any tournaments.
     </p>
     <p>
-      <% if user_signed_in? %>
-        <%= link_to "View your team page", "#", class: "btn btn-primary btn-lg", disabled: true %>
-      <% else %>
-        <%= link_to "Sign up" , new_user_registration_path, class: "btn btn-primary btn-lg" %>
-        <%= link_to new_user_session_path, class: "btn btn-primary btn-lg" do %>Log in <span class="glyphicon glyphicon-log-in"> <% end %>
-      <% end %>
-      <%= link_to "Tournaments", "#", class: "btn btn-primary btn-lg", disabled: true %>
+      <h2>Emails and passwords to accounts for testing purposes:</h2>
+      <ul>
+        <li><strong>email:</strong> admin@admin.com <strong>password:</strong> password</li>
+        <li><strong>email:</strong> team1@team.com <strong>password:</strong> password</li>
+        <li><strong>email:</strong> team2@team.com <strong>password:</strong> password</li>
+        <li><strong>email:</strong> team3@team.com <strong>password:</strong> password</li>
+        <li><strong>email:</strong> teamless@team.com <strong>password:</strong> password</li>
+      </ul>
     </p>
     
   </div>

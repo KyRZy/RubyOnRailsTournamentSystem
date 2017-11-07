@@ -80,16 +80,21 @@ class TournamentsController < ApplicationController
   def join_tournament
     if @tournament.user != current_user
       if @tournament.user.team != current_user.team
-        participant = Participant.create(tournament_id: @tournament.id,team_id: current_user.team.id)
-        respond_to do |format|
-          if participant.save
-            flash[:success] = "Your team successfully join the tournament."
-            format.html { redirect_to @tournament}
-            format.json { render :show, status: :created, location: @tournament }
-          else
-            format.html { render :new }
-            format.json { render json: @tournament.errors, status: :unprocessable_entity }
+        if current_user.team.leader == current_user
+          participant = Participant.create(tournament_id: @tournament.id,team_id: current_user.team.id)
+          respond_to do |format|
+            if participant.save
+              flash[:success] = "Your team successfully join the tournament."
+              format.html { redirect_to @tournament}
+              format.json { render :show, status: :created, location: @tournament }
+            else
+              format.html { render :new }
+              format.json { render json: @tournament.errors, status: :unprocessable_entity }
+            end
           end
+        else
+          flash[:error] = "Only leader of a team can join tournaments."
+          redirect_to tournaments_url
         end 
       else
         flash[:error] = "You cannot join tournament created by your teammate."
@@ -102,12 +107,17 @@ class TournamentsController < ApplicationController
   end
 
   def leave_tournament
-    Participant.where(tournament_id: @tournament.id,team_id: current_user.team.id).first.destroy
-    respond_to do |format|
-      flash[:success] = 'You successully left the tournament.'
-      format.html { redirect_to tournaments_url}
-      format.json { head :no_content }
-    end
+    if current_user.team.leader == current_user
+      Participant.where(tournament_id: @tournament.id,team_id: current_user.team.id).first.destroy
+      respond_to do |format|
+        flash[:success] = 'You successully left the tournament.'
+        format.html { redirect_to tournaments_url}
+        format.json { head :no_content }
+      end
+    else
+      flash[:error] = "Only leader of a team can leave tournaments."
+      redirect_to tournaments_url
+    end 
   end
 
   private

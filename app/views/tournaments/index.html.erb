@@ -19,11 +19,7 @@
       <tr>
         <td><%= tournament.name %></td>
         <td><%= tournament.tournament_type.name %></td>
-        <td>
-          <% tournament.participants.each do |p| %>
-            <%= p.team.name %> <br>
-          <% end %>
-        </td>
+        <td><%= tournament.participants.count %>/16</td>
         <td><%= tournament.start_date %></td>
         <td><%= tournament.finished %></td>
         <td><%= link_to 'Show', tournament %></td>

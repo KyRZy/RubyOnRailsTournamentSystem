@@ -6,5 +6,5 @@ class Team < ApplicationRecord
     belongs_to :participant, :class_name => 'Participant'
     belongs_to :user, :class_name => 'User', optional: true
 
-    validates_uniqueness_of :name
+    validates_uniqueness_of :name, :case_sensitive => false
 end

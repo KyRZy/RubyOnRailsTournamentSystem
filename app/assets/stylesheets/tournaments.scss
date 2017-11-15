@@ -1,3 +1,84 @@
 // Place all the styles related to the Tournaments controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+/*.round{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}*/
+#brackets{
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
+    margin: 20px 0;
+}
+
+.round{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 200px;
+    &:not(:first-child){
+        margin-left: 80px;
+    }
+
+    & .match:not(:last-child){
+        margin-bottom: 40px;
+    }
+}
+.lines{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.line-set{
+    position:relative;
+    &:not(:last-child){
+        margin-bottom: 40px;
+    }
+}
+
+.team{
+    overflow: hidden;
+    white-space: normal;
+    border: 1px solid black;
+    height:70px;
+    width: 200px;
+}
+
+.top-horizontal{
+    position:absolute;
+    background-color:black;
+    width: 40px;
+    height: 2px;
+    top: 69px;
+}
+
+.bottom-horizontal{
+    position:absolute;
+    background-color:black;
+    width: 40px;
+    height: 2px;
+    bottom: 69px;
+}
+
+.vertical{
+    position:absolute;
+    background-color:black;
+    width: 2px;
+    height: auto;
+    top: 69px;
+    bottom: 69px;
+    left: 40px;
+}
+
+.center-horizontal{
+    position:absolute;
+    background-color:black;
+    width: 40px;
+    height: 2px;
+    top: 50%;
+    left: 40px;
+}

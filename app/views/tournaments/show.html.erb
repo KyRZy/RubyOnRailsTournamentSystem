@@ -1,24 +1,21 @@
-<p id="notice">
-  <%= notice %>
-</p>
-
-<p>
+<div>
   <strong>User:</strong>
   <%= @tournament.user.username %>
-</p>
+</div>
 
-<p>
+<div>
   <strong>Name:</strong>
   <%= @tournament.name %>
-</p>
+</div>
 
-<p>
+<div>
   <strong>Tournament type:</strong>
   <%= @tournament.tournament_type.name %>
-</p>
+</div>
 
 <div>
   <strong>Participants:</strong>
+  <% if @tournament.participants.present? %>
   <ul>
     <% @tournament.participants.each do |participant| %>
       <li>
@@ -26,22 +23,30 @@
       </li>
     <% end %>
   </ul>
+  <% else %>
+    None
+  <% end %>
 </div>
 
-<p>
+<div>
   <strong>Start date:</strong>
   <%= @tournament.start_date %>
-</p>
+</div>
 
-<p>
+<div>
   <strong>Finished:</strong>
   <%= @tournament.finished %>
-</p>
+</div>
+
+<%= render 'tournaments/bracket-partials/single-elimination'%>
+
 <% if @current_user_in_tournament %>
   <%= link_to 'Leave tournament', leave_tournament_path(@tournament), method: :post %>
 <% else %>
   <%= link_to 'Join tournament', join_tournament_path(@tournament), method: :post %>
 <% end %>
 <br>
+<% if @tournament.user == current_user %>
 <%= link_to 'Edit', edit_tournament_path(@tournament) %> |
+<% end %>
 <%= link_to 'Back', tournaments_path %>

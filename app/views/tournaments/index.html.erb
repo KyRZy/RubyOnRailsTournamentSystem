@@ -1,34 +1,29 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Tournaments</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Tournament type</th>
-      <th>Participants</th>
-      <th>Start date</th>
-      <th>Finished</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @tournaments.each do |tournament| %>
+<div class="table-responsive">
+  <table class="table table-bordered table-hover table-striped table-responsive">
+    <thead>
       <tr>
-        <td><%= tournament.name %></td>
-        <td><%= tournament.tournament_type.name %></td>
-        <td><%= tournament.participants.count %>/16</td>
-        <td><%= tournament.start_date %></td>
-        <td><%= tournament.finished %></td>
-        <td><%= link_to 'Show', tournament %></td>
-        <td><%= link_to 'Edit', edit_tournament_path(tournament) %></td>
-        <td><%= link_to 'Destroy', tournament, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>Name</th>
+        <th>Tournament type</th>
+        <th>Participants</th>
+        <th>Start date</th>
+        <th>Finished</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      <% @tournaments.each do |tournament| %>
+        <tr>
+          <td><%= link_to tournament.name, tournament %></td>
+          <td><%= tournament.tournament_type.name %></td>
+          <td><%= tournament.participants.count %>/16</td>
+          <td><%= tournament.start_date %></td>
+          <td><%= tournament.finished %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
 
 <br>

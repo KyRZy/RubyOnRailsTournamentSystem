@@ -61,4 +61,20 @@
   <ul>
     <li>join existing tournaments</li>
   </ul>
+  <h3>Obstacles during implementation</h3>
+  <ul>
+    <li>
+      Relation "Team belongs to User" in Rails 5 makes sure that reference in User cannot be null.
+      Fortunately, it wasn't a case in previous version and to disable new restriction,
+      all we need to do is to change "config.active_record.belongs_to_required_by_default = true" to false in config/new_framework_defaults.rb
+      https://stackoverflow.com/questions/10462676/best-practice-about-empty-belongs-to-association
+    </li>
+    <li>
+      In action "join_existing_team" in Team controller to check if team exists, instead of writing "if team = Team.where(name: name).first"
+      there's used SQL querry "if team = Team.where("LOWER(name) = ?",name.downcase)".<br>
+      Change was made to make finding, if name in text field matches any of teams, case-insensitive.
+      LOWER function is available in PostreSQL. That solution allowes to capitalise any part of team's name and at the same time 
+      make's it easier to find when someone wants to join existing team.
+    </li>
+  </ul>
 </div>

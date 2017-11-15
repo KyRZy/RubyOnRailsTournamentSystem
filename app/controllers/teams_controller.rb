@@ -94,8 +94,8 @@ class TeamsController < ApplicationController
   def join_existing_team
     name = params[:name]
     password = params[:password]
-
-    if team = Team.where(name: name).first
+    # changed "if team = Team.where(name: name).first" to make search case-insensivite
+    if team = Team.where("LOWER(name) = ?",name.downcase).first
       if team.encrypted_password == BCrypt::Engine.hash_secret(password, team.salt)
         current_user.team_id = team.id
         respond_to do |format|

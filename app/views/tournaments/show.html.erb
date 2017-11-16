@@ -40,7 +40,7 @@
 
 <%-# add path to folder with partials and check type of tournament -%>
 <% s = 'tournaments/bracket-partials/'+@tournament.tournament_type.name.downcase %>
-<%= render s[0, s.length - 7]%>
+<%= render s[0, s.length - 7], tournament: @tournament %>
 
 <% if @current_user_in_tournament %>
   <%= link_to 'Leave tournament', leave_tournament_path(@tournament), method: :post %>

@@ -2,24 +2,21 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-/*.round{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-}*/
-#brackets{
+$line-color: #000000;
+
+.brackets{
     display: flex;
     flex-wrap: nowrap;
     overflow-x:auto;
     overflow-y:hidden;
     margin: 20px 0;
+    padding-bottom: 20px;
 }
 
 .round{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    width: 200px;
     &:not(:first-child){
         margin-left: 80px;
     }
@@ -43,14 +40,44 @@
 .team{
     overflow: hidden;
     white-space: normal;
-    border: 1px solid black;
+    border: 1px solid $line-color;
     height:70px;
     width: 200px;
+
+    div.team-name{
+        float: left;
+        width: 75%;
+        height: 100%;
+        div{
+            position: relative;
+            top: 50%;
+            text-align: center;
+            -ms-transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+    }
+
+    div.team-score{
+        float: left;
+        width: 25%;
+        height: 100%;
+        border-left: 1px solid $line-color;
+        div{
+            position: relative;
+            top: 50%;
+            text-align: center;
+            -ms-transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+    }
 }
+
 
 .top-horizontal{
     position:absolute;
-    background-color:black;
+    background-color: $line-color;
     width: 40px;
     height: 2px;
     top: 69px;
@@ -58,7 +85,7 @@
 
 .bottom-horizontal{
     position:absolute;
-    background-color:black;
+    background-color: $line-color;
     width: 40px;
     height: 2px;
     bottom: 69px;
@@ -66,7 +93,7 @@
 
 .vertical{
     position:absolute;
-    background-color:black;
+    background-color: $line-color;
     width: 2px;
     height: auto;
     top: 69px;
@@ -76,9 +103,10 @@
 
 .center-horizontal{
     position:absolute;
-    background-color:black;
+    background-color: $line-color;
     width: 40px;
     height: 2px;
     top: 50%;
     left: 40px;
+    transform: translateY(-50%);
 }

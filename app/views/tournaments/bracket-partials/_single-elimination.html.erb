@@ -6,7 +6,7 @@
   </div>
   <div class="lines">
     <% for i in 0..3%>
-      <%= render partial:'tournaments/bracket-partials/lines', locals: {height: 'height:320px'} %>
+      <%= render partial:'tournaments/bracket-partials/lines', locals: {height: 'height:130px'} %>
         <% end %>
   </div>
   <div class="round">
@@ -16,7 +16,7 @@
   </div>
   <div class="lines">
     <% for i in 0..1%>
-      <%= render partial:'tournaments/bracket-partials/lines', locals: {height: 'height:500px'} %>
+      <%= render partial:'tournaments/bracket-partials/lines', locals: {height: 'height:195px'} %>
         <% end %>
   </div>
   <div class="round">
@@ -25,7 +25,7 @@
       <% end %>
   </div>
   <div class="lines">
-    <%= render partial:'tournaments/bracket-partials/lines', locals: {height: 'height:860px'} %>
+    <%= render partial:'tournaments/bracket-partials/lines', locals: {height: 'height:325px'} %>
   </div>
   <div class="round">
       <%= render partial:'tournaments/bracket-partials/match', locals: {stage: 14, tournament: @tournament} %>

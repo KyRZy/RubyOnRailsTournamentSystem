@@ -20,10 +20,6 @@ $line-color: #000000;
     &:not(:first-child){
         margin-left: 80px;
     }
-
-    & .match:not(:last-child){
-        margin-bottom: 40px;
-    }
 }
 .lines{
     display: flex;
@@ -32,45 +28,29 @@ $line-color: #000000;
 }
 .line-set{
     position:relative;
-    &:not(:last-child){
-        margin-bottom: 40px;
-    }
 }
 
 .team{
     overflow: hidden;
     white-space: normal;
     border: 1px solid $line-color;
-    height:70px;
-    width: 200px;
+    height:30px;
+    width: 250px;
+    font-size: 20px;
 
     div.team-name{
         float: left;
-        width: 75%;
+        width: 85%;
         height: 100%;
-        div{
-            position: relative;
-            top: 50%;
-            text-align: center;
-            -ms-transform: translateY(-50%);
-            -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
-        }
+        padding-left: 5px;
     }
 
     div.team-score{
         float: left;
-        width: 25%;
+        width: 15%;
         height: 100%;
         border-left: 1px solid $line-color;
-        div{
-            position: relative;
-            top: 50%;
-            text-align: center;
-            -ms-transform: translateY(-50%);
-            -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
-        }
+        text-align: center;
     }
 }
 
@@ -80,7 +60,7 @@ $line-color: #000000;
     background-color: $line-color;
     width: 40px;
     height: 2px;
-    top: 69px;
+    top: 31.5px;
 }
 
 .bottom-horizontal{
@@ -88,7 +68,7 @@ $line-color: #000000;
     background-color: $line-color;
     width: 40px;
     height: 2px;
-    bottom: 69px;
+    bottom: 31.5px;
 }
 
 .vertical{
@@ -96,8 +76,8 @@ $line-color: #000000;
     background-color: $line-color;
     width: 2px;
     height: auto;
-    top: 69px;
-    bottom: 69px;
+    top: 31.5px;
+    bottom: 31.5px;
     left: 40px;
 }
 

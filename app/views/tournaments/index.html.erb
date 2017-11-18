@@ -16,7 +16,7 @@
         <tr>
           <td><%= link_to tournament.name, tournament %></td>
           <td><%= tournament.tournament_type.name %></td>
-          <td><%= tournament.participants.count %>/16</td>
+          <td><%= tournament.participants.count %>/<%= tournament.max_participants %></td>
           <td><%= tournament.start_date %></td>
           <td><%= tournament.finished %></td>
         </tr>
@@ -24,7 +24,6 @@
     </tbody>
   </table>
 </div>
-
 
 <br>
 <%= link_to 'New Tournament', new_tournament_path %>

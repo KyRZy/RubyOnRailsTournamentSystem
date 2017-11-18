@@ -22,6 +22,11 @@
   </div>
 
   <div class="field">
+      <%= f.label :max_participants %>
+      <%= f.select(:max_participants, @max_participants_options) %>
+  </div>
+
+  <div class="field">
     <%= f.label :start_date %>
     <%= f.datetime_select :start_date %>
   </div>

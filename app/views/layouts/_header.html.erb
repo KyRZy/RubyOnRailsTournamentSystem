@@ -15,13 +15,13 @@
         <li><a href="<%= home_about_path %>">About project</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+      <li><%= link_to "Tournaments", tournaments_path %> </li>
       <% if user_signed_in? %>
         <% if current_user.team.nil? %>
           <li><%= link_to "Create/Join Team", new_team_path %> </li>
         <% else %>
           <li><%= link_to "My team", current_user.team %> </li>
         <% end %>
-        <li><%= link_to "Tournaments", tournaments_path %> </li>
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello <strong><%= current_user.username %>!</strong> <span class="caret"></a>
           <ul class="dropdown-menu">

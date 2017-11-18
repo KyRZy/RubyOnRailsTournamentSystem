@@ -14,21 +14,6 @@
 </div>
 
 <div>
-  <strong>Participants:</strong>
-  <% if @tournament.participants.present? %>
-  <ul>
-    <% @tournament.participants.each do |participant| %>
-      <li>
-        <%= participant.team.name %>
-      </li>
-    <% end %>
-  </ul>
-  <% else %>
-    None
-  <% end %>
-</div>
-
-<div>
   <strong>Start date:</strong>
   <%= @tournament.start_date %>
 </div>
@@ -37,6 +22,37 @@
   <strong>Finished:</strong>
   <%= @tournament.finished %>
 </div>
+
+<div>
+    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#participants" aria-expanded="false" aria-controls="participants">
+      Participants (<%= @tournament.participants.count %>/<%= @tournament.max_participants %>):
+    </a>
+    <div class="collapse" id="participants">
+          <% if @tournament.participants.present? %>
+          <ul>
+            <% @tournament.participants.each do |participant| %>
+              <li>
+                <% if current_user.present? && participant.team == current_user.team %>
+                  <strong><%= participant.team.name %></strong>
+                <% else %>
+                  <%= participant.team.name %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+          <% else %>
+            None
+          <% end %>
+      </div>
+  </div>
+<br>
+<% if @tournament.user == current_user %>
+  <% if %>
+    <%= link_to 'Start tournament', start_tournament_path(@tournament), class: 'btn btn-primary', method: :post %>
+  <% else %>
+
+  <% end %>
+<% end %>
 
 <%-# add path to folder with partials and check type of tournament -%>
 <% s = 'tournaments/bracket-partials/'+@tournament.tournament_type.name.downcase %>

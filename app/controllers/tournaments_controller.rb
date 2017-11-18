@@ -1,11 +1,37 @@
 class TournamentsController < ApplicationController
-  before_action :set_tournament, only: [:show, :edit, :update, :destroy, :join_tournament, :leave_tournament, :has_team?]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_tournament, only: [:show, :edit, :update, :destroy, :join_tournament, :leave_tournament, :start_tournament,
+                :has_team?, :is_tournament_creator?, :is_tournament_creator_from_the_same_team?, :is_tournament_full?]
   before_action :has_team?, only: [:join_tournament]
-
+  before_action :is_tournament_creator?, only: [:join_tournament]
+  before_action :is_tournament_creator_from_the_same_team?, only: [:join_tournament]
+  before_action :is_tournament_full?, only: [:join_tournament]
+  
   def has_team?
     if current_user.team.nil?
       flash[:error] = "You need to create/join team to join tournaments."
       redirect_to tournaments_url
+    end
+  end
+
+  def is_tournament_creator?
+    if @tournament.user == current_user
+      flash[:error] = 'You cannot join your own tournaments.'
+      redirect_to tournaments_url
+    end
+  end
+
+  def is_tournament_creator_from_the_same_team?
+    if @tournament.user.team == current_user.team
+      flash[:error] = "You cannot join tournament created by your teammate."
+      redirect_to tournaments_url
+    end 
+  end
+
+  def is_tournament_full?
+    if @tournament.participants.count == @tournament.max_participants
+      flash[:error] = "You cannot join. Tournament is full."
+      redirect_to @tournament
     end
   end
 
@@ -18,7 +44,7 @@ class TournamentsController < ApplicationController
   # GET /tournaments/1
   # GET /tournaments/1.json
   def show
-    if current_user.team.present? && @tournament.participants.exists?(team_id: current_user.team.id)
+    if current_user.present? && current_user.team.present? && @tournament.participants.exists?(team_id: current_user.team.id)
       @current_user_in_tournament = true
     else
       @current_user_in_tournament = false
@@ -28,6 +54,7 @@ class TournamentsController < ApplicationController
   # GET /tournaments/new
   def new
     @tournament = Tournament.new
+    @max_participants_options = [16]
   end
 
   # GET /tournaments/1/edit
@@ -78,32 +105,22 @@ class TournamentsController < ApplicationController
   end
 
   def join_tournament
-    if @tournament.user != current_user
-      if @tournament.user.team != current_user.team
-        if current_user.team.leader == current_user
-          participant = Participant.create(tournament_id: @tournament.id,team_id: current_user.team.id)
-          respond_to do |format|
-            if participant.save
-              flash[:success] = "Your team successfully join the tournament."
-              format.html { redirect_to @tournament}
-              format.json { render :show, status: :created, location: @tournament }
-            else
-              format.html { render :new }
-              format.json { render json: @tournament.errors, status: :unprocessable_entity }
-            end
-          end
+    if current_user.team.leader == current_user
+      participant = Participant.create(tournament_id: @tournament.id,team_id: current_user.team.id)
+      respond_to do |format|
+        if participant.save
+          flash[:success] = "Your team successfully join the tournament."
+          format.html { redirect_to @tournament}
+          format.json { render :show, status: :created, location: @tournament }
         else
-          flash[:error] = "Only leader of a team can join tournaments."
-          redirect_to tournaments_url
-        end 
-      else
-        flash[:error] = "You cannot join tournament created by your teammate."
-        redirect_to tournaments_url
-     end 
+          format.html { render :new }
+          format.json { render json: @tournament.errors, status: :unprocessable_entity }
+        end
+      end
     else
-      flash[:error] = 'You cannot join your own tournaments.'
+      flash[:error] = "Only leader of a team can join tournaments."
       redirect_to tournaments_url
-    end
+    end 
   end
 
   def leave_tournament
@@ -120,6 +137,15 @@ class TournamentsController < ApplicationController
     end 
   end
 
+  def start_tournament
+    if @tournament.user == current_user
+      flash[:success] = "IT WORKS!"
+    else
+      flash[:error] = "Only tournament admin can start the tournament."
+    end
+    redirect_to @tournament
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_tournament
@@ -128,6 +154,6 @@ class TournamentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def tournament_params
-      params.require(:tournament).permit(:user_id, :name, :tournament_type_id, :start_date, :finished)
+      params.require(:tournament).permit(:user_id, :name, :tournament_type_id, :max_participants, :start_date, :finished)
     end
 end

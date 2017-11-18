@@ -6,7 +6,7 @@ class TournamentsController < ApplicationController
   before_action :is_tournament_creator?, only: [:join_tournament]
   before_action :is_tournament_creator_from_the_same_team?, only: [:join_tournament]
   before_action :is_tournament_full?, only: [:join_tournament]
-  
+
   def has_team?
     if current_user.team.nil?
       flash[:error] = "You need to create/join team to join tournaments."
@@ -137,13 +137,16 @@ class TournamentsController < ApplicationController
     end 
   end
 
-  def start_tournament
-    if @tournament.user == current_user
-      flash[:success] = "IT WORKS!"
-    else
-      flash[:error] = "Only tournament admin can start the tournament."
+  def update_tournament_brackets
+    respond_to do |format|
+      format.js
     end
-    redirect_to @tournament
+  end
+
+  def start_tournament
+    respond_to do |format|
+      format.js
+    end
   end
 
   private

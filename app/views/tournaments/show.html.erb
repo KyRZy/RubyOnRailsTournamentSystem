@@ -47,21 +47,27 @@
   </div>
 <br>
 <% if @tournament.user == current_user %>
-  <% if %>
-    <%= link_to 'Start tournament', start_tournament_path(@tournament), class: 'btn btn-primary', method: :post %>
+  <% if @tournament.participants.count == @tournament.max_participants %>
+    <%= button_to 'Start tournament', start_tournament_path(@tournament), class: 'btn btn-primary', method: :post, remote: true %>
   <% else %>
-
+    <%= button_to 'Not enough participants to start', start_tournament_path(@tournament), class: 'btn btn-primary', disabled: 'disabled', method: :post %>
   <% end %>
 <% end %>
+
+<br>
+<%= button_to 'Refresh brackets', update_tournament_brackets_path(@tournament), method: :get, id: 'refresh',class: 'btn btn-primary', remote: true %>
+
 
 <%-# add path to folder with partials and check type of tournament -%>
 <% s = 'tournaments/bracket-partials/'+@tournament.tournament_type.name.downcase %>
 <%= render s[0, s.length - 7], tournament: @tournament %>
 
-<% if @current_user_in_tournament %>
-  <%= link_to 'Leave tournament', leave_tournament_path(@tournament), method: :post %>
-<% else %>
-  <%= link_to 'Join tournament', join_tournament_path(@tournament), method: :post %>
+<% if current_user.team.present? && current_user.team != @tournament.user.team %>
+  <% if @current_user_in_tournament %>
+    <%= link_to 'Leave tournament', leave_tournament_path(@tournament), method: :post %>
+  <% else %>
+    <%= link_to 'Join tournament', join_tournament_path(@tournament), method: :post %>
+  <% end %>
 <% end %>
 <br>
 <% if @tournament.user == current_user %>

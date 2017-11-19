@@ -1,7 +1,7 @@
 require 'bcrypt'
 
 class TeamsController < ApplicationController
-  before_action :set_team, only: [:show, :edit, :update, :destroy]
+  before_action :set_team, only: [:show, :edit, :update, :destroy, :leave_team]
 
   # GET /teams
   # GET /teams.json

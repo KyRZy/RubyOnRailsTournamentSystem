@@ -1,6 +1,6 @@
 class TournamentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_tournament, only: [:show, :edit, :update, :destroy, :join_tournament, :leave_tournament, :start_tournament,
+  before_action :set_tournament, only: [:show, :edit, :update, :destroy, :join_tournament, :leave_tournament, :start_tournament, :update_tournament_brackets, :remove_all_matches,
                 :has_team?, :is_tournament_creator?, :is_tournament_creator_from_the_same_team?, :is_tournament_full?]
   before_action :has_team?, only: [:join_tournament]
   before_action :is_tournament_creator?, only: [:join_tournament]
@@ -144,9 +144,36 @@ class TournamentsController < ApplicationController
   end
 
   def start_tournament
+    if @tournament.matches.count == 0
+      Tournament.transaction do
+        participants = @tournament.participants
+        puts participants.class
+
+        for i in 0..@tournament.max_participants/2
+          participant_a = participants.sample
+          participants -= [participant_a]
+          participant_b = participants.sample
+          participants -= [participant_b]
+
+          Match.create(participant_a: participant_a, participant_b: participant_b, stage: i)
+        end
+      end
+    else
+      @already_started = true
+      flash[:error] = 'This is a test!'
+    end
     respond_to do |format|
       format.js
     end
+  end
+
+  def remove_all_matches
+    Tournament.transaction do
+      @tournament.matches.each do |m|
+        m.destroy
+      end
+    end
+    redirect_to @tournament
   end
 
   private

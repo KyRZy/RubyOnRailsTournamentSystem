@@ -56,7 +56,8 @@
 
 <br>
 <%= button_to 'Refresh brackets', update_tournament_brackets_path(@tournament), method: :get, id: 'refresh',class: 'btn btn-primary', remote: true %>
-
+<br>
+<%= button_to 'Remove all matches (debug button just for development)', remove_all_matches_path(@tournament), method: :post, class: 'btn btn-primary' %>
 
 <%-# add path to folder with partials and check type of tournament -%>
 <% s = 'tournaments/bracket-partials/'+@tournament.tournament_type.name.downcase %>

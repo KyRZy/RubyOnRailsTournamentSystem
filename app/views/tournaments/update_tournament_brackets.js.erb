@@ -1,1 +1,5 @@
-console.log("update");
+<% @tournament.matches.each do |m| %>
+var match = $("div.match[data-stage='<%=m.stage%>']");
+$(match).find(".team-name").first().html("<%= m.participant_a.team.name%>");
+$(match).find(".team-name").last().html("<%= m.participant_b.team.name%>");
+<% end %>

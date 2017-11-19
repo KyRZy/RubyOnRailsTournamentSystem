@@ -1,5 +1,5 @@
 class TournamentsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show, :update_tournament_brackets]
   before_action :set_tournament, only: [:show, :edit, :update, :destroy, :join_tournament, :leave_tournament, :start_tournament, :update_tournament_brackets, :remove_all_matches,
                 :has_team?, :is_tournament_creator?, :is_tournament_creator_from_the_same_team?, :is_tournament_full?]
   before_action :has_team?, only: [:join_tournament]
@@ -149,7 +149,8 @@ class TournamentsController < ApplicationController
         participants = @tournament.participants
         puts participants.class
 
-        for i in 0..@tournament.max_participants/2
+
+        for i in 0..(@tournament.max_participants/2 - 1)
           participant_a = participants.sample
           participants -= [participant_a]
           participant_b = participants.sample

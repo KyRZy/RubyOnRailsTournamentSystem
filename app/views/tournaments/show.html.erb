@@ -63,7 +63,7 @@
 <% s = 'tournaments/bracket-partials/'+@tournament.tournament_type.name.downcase %>
 <%= render s[0, s.length - 7], tournament: @tournament %>
 
-<% if current_user.team.present? && current_user.team != @tournament.user.team %>
+<% if current_user.present? && current_user.team.present? && current_user.team != @tournament.user.team %>
   <% if @current_user_in_tournament %>
     <%= link_to 'Leave tournament', leave_tournament_path(@tournament), method: :post %>
   <% else %>

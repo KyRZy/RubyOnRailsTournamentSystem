@@ -58,6 +58,7 @@ $line-color: #000000;
             left:50%;
             -webkit-transform: translate(-50%,-50%);
             transform: translate(-50%,-50%);
+            border: 2px solid $line-color;
             opacity: 0;
             transition: opacity .1s;
         }

@@ -22,7 +22,7 @@ $("#refresh").attr("disabled", true);
         } else if (<%= m.participant_a_score < m.participant_b_score %>){
             $(match).find(".team-score").first().html("<%= m.participant_a_score %>").parent().addClass("loser");
             $(match).find(".team-score").last().html("<%= m.participant_b_score %>").parent().addClass("winner");
-        } else {
+        } else if(<%= @tournament.user == current_user %>){
             $(match).append('<button type="button" class="btn btn-default match-score-button">Insert score</button>');
         } 
     }

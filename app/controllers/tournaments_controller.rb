@@ -1,7 +1,6 @@
 class TournamentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :update_tournament_brackets]
-  before_action :set_tournament, only: [:show, :edit, :update, :destroy, :join_tournament, :leave_tournament, :start_tournament, :update_tournament_brackets, :remove_all_matches,
-                :has_team?, :is_tournament_creator?, :is_tournament_creator_from_the_same_team?, :is_tournament_full?]
+  before_action :set_tournament, except: [:index, :new, :create]
   before_action :has_team?, only: [:join_tournament]
   before_action :is_tournament_creator?, only: [:join_tournament]
   before_action :is_tournament_creator_from_the_same_team?, only: [:join_tournament]
@@ -161,7 +160,6 @@ class TournamentsController < ApplicationController
       end
     else
       @already_started = true
-      flash[:error] = 'This is a test!'
     end
     respond_to do |format|
       format.js

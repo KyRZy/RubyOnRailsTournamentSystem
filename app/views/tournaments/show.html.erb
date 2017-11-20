@@ -1,30 +1,21 @@
-<div>
-  <strong>User:</strong>
-  <%= @tournament.user.username %>
+<div id="tournament-info">
+  <h1><strong>Name: </strong><%= @tournament.user.username %></h3>
+  <h4><strong>Administrator: </strong><%= @tournament.user.username %></h4>
+  <h4><strong>Format: </strong><%= @tournament.tournament_type.name %></h4>
+  <h4>
+    <strong>Status: </strong>
+    <% if @tournament.start_date > Time.now %>
+      Will begin <%= @tournament.start_date %>
+    <% elsif @tournament.start_date <= Time.now && (not @tournament.finished)  %>
+      Already started
+    <% else %>
+      Finished
+    <% end %>
+  </h4>
 </div>
 
 <div>
-  <strong>Name:</strong>
-  <%= @tournament.name %>
-</div>
-
-<div>
-  <strong>Tournament type:</strong>
-  <%= @tournament.tournament_type.name %>
-</div>
-
-<div>
-  <strong>Start date:</strong>
-  <%= @tournament.start_date %>
-</div>
-
-<div>
-  <strong>Finished:</strong>
-  <%= @tournament.finished %>
-</div>
-
-<div>
-    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#participants" aria-expanded="false" aria-controls="participants">
+    <a class="btn btn-default" role="button" data-toggle="collapse" href="#participants" aria-expanded="false" aria-controls="participants">
       Participants (<%= @tournament.participants.count %>/<%= @tournament.max_participants %>):
     </a>
     <div class="collapse" id="participants">
@@ -45,8 +36,9 @@
           <% end %>
       </div>
   </div>
-<br>
+
 <% if @tournament.user == current_user %>
+  <br>
   <% if @tournament.participants.count == @tournament.max_participants %>
     <%= button_to 'Start tournament', start_tournament_path(@tournament), class: 'btn btn-primary', method: :post, remote: true %>
   <% else %>
@@ -61,7 +53,9 @@
 
 <%-# add path to folder with partials and check type of tournament -%>
 <% s = 'tournaments/bracket-partials/'+@tournament.tournament_type.name.downcase %>
-<%= render s[0, s.length - 7], tournament: @tournament %>
+<div id="bracket-container">
+  <%= render s[0, s.length - 7], tournament: @tournament %>
+</div>
 
 <% if current_user.present? && current_user.team.present? && current_user.team != @tournament.user.team %>
   <% if @current_user_in_tournament %>

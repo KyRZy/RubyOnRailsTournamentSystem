@@ -23,7 +23,7 @@
           <li><%= link_to "My team", current_user.team %> </li>
         <% end %>
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello <strong><%= current_user.username %>!</strong> <span class="caret"></a>
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello <strong><%= current_user.username %>!</strong><span class="caret"></span></a>
           <ul class="dropdown-menu">
               <li><%= link_to "Change password", edit_user_registration_path %> </li>
               <li><%= link_to destroy_user_session_path, :method => :delete do %>Log out <span class="glyphicon glyphicon-log-out"> <% end %></li>

@@ -1,5 +1,23 @@
+$(".brackets").parent().append('<div id="loading"></div>');
+$(".brackets").css("opacity",".5");
+$("#refresh").val("Refreshing...");
+$("#refresh").attr("disabled", true);
+
 <% @tournament.matches.each do |m| %>
-var match = $("div.match[data-stage='<%=m.stage%>']");
-$(match).find(".team-name").first().html("<%= m.participant_a.team.name%>");
-$(match).find(".team-name").last().html("<%= m.participant_b.team.name%>");
+    var match = $("div.match[data-stage='<%= m.stage %>']");
+    $(match).find(".team-name").first().html("<%= m.participant_a.team.name %>");
+    $(match).find(".team-name").last().html("<%= m.participant_b.team.name %>");
+
+    if(<%= m.participant_a_score > m.participant_b_score %>){
+        $(match).find(".team-score").first().html("<%= m.participant_a_score %>").parent().addClass("winner");
+        $(match).find(".team-score").last().html("<%= m.participant_b_score %>").parent().addClass("loser");
+    } else if (<%= m.participant_a_score < m.participant_b_score %>){
+        $(match).find(".team-score").first().html("<%= m.participant_a_score %>").parent().addClass("loser");
+        $(match).find(".team-score").last().html("<%= m.participant_b_score %>").parent().addClass("winner");
+    }
 <% end %>
+
+$("#loading").remove();
+$(".brackets").css("opacity","1");
+$("#refresh").val("Refresh brackets");
+$("#refresh").attr("disabled", false);

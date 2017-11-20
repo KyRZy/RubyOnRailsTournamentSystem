@@ -4,6 +4,21 @@
 
 $line-color: #000000;
 
+#tournament-info{
+    h1{
+        margin: 0 0 20px 0;
+    }
+
+    h4{
+        margin: 10px 0;
+    }
+    
+}
+
+#bracket-container{
+    position: relative;
+}
+
 .brackets{
     display: flex;
     flex-wrap: nowrap;
@@ -93,4 +108,31 @@ $line-color: #000000;
 
 #participants{
     padding-top: 10px;
+}
+
+#loading{
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #0a0a0a; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.winner{
+    background-color: #77ee6c;
+}
+
+.loser{
+    background-color: #f88a8a;
 }

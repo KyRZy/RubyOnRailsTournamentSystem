@@ -175,7 +175,7 @@ class TournamentsController < ApplicationController
     @score_b = params[:score_b]
     stage = params[:stage]
 
-    Tournament.transaction do
+    Match.transaction do
       Match.update(params[:match_id], participant_a_score: @score_a, participant_b_score: @score_b)
 
       match = Match.find(params[:match_id])
@@ -221,7 +221,7 @@ class TournamentsController < ApplicationController
   end
 
   def remove_all_matches
-    Tournament.transaction do
+    Match.transaction do
       @tournament.matches.each do |m|
         m.destroy
       end

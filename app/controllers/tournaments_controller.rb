@@ -1,3 +1,5 @@
+require 'json'
+
 class TournamentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :update_tournament_brackets]
   before_action :set_tournament, except: [:index, :new, :create]
@@ -146,8 +148,6 @@ class TournamentsController < ApplicationController
     if @tournament.matches.count == 0
       Tournament.transaction do
         participants = @tournament.participants
-        puts participants.class
-
 
         for i in 0..(@tournament.max_participants/2 - 1)
           participant_a = participants.sample
@@ -169,14 +169,47 @@ class TournamentsController < ApplicationController
   def insert_match_score
     @score_a = params[:score_a]
     @score_b = params[:score_b]
+    stage = params[:stage]
 
-    @stage = params[:stage]
+    Tournament.transaction do
+      Match.update(params[:match_id], participant_a_score: @score_a, participant_b_score: @score_b)
 
-    match = Match.update(params[:match_id], participant_a_score: @score_a, participant_b_score: @score_b)
+      match = Match.find(params[:match_id])
+      winner = nil
+      if(@score_a > @score_b)
+        winner = match.participant_a
+        loser = match.participant_b
+      else
+        winner = match.participant_b
+        loser = match.participant_a
+      end
 
-    if not match
-      @not_saved = true
+      path = Rails.root.join('app','assets','public', 'matches.json')
+      file = File.read(path)
+      data_hash = JSON.parse(file)
+
+      next_matches = data_hash[@tournament.tournament_type.name][stage]
+      if next_matches.key?("winner")
+        next_stage_match = @tournament.matches.find {|match| match.stage == next_matches["winner"]["next_stage"]}
+        if next_stage_match.present?
+          if next_matches["winner"]["side"] == "a"
+            Match.update(next_stage_match ,participant_a: winner)
+          else
+            Match.update(next_stage_match, participant_b: winner)
+          end
+        else
+          if next_matches["winner"]["side"] == "a"
+            Match.create(participant_a: winner, stage: next_matches["winner"]["next_stage"])
+          else
+            Match.create(participant_b: winner, stage: next_matches["winner"]["next_stage"])
+          end
+        end
+      end
     end
+
+    #if not match
+    #  @not_saved = true
+    #end
 
     respond_to do |format|
       format.js

@@ -10,6 +10,7 @@ $ ->
         tournament_id = $("div#tournament-info").data("id")
         match = $(this).parent()
         match_id = $(match).data("match-id")
+        stage = $(match).data("stage")
         team_a = $(match).find(".team-name").first().html()
         team_b = $(match).find(".team-name").last().html()
 
@@ -24,6 +25,7 @@ $ ->
                                         <h3>'+team_a+' : '+team_b+'</h3>
                                         <form action="/tournament/'+tournament_id+'/insert_match_score" method="post" data-remote="true">
                                             <input type="hidden" name="match_id" value="'+match_id+'">
+                                            <input type="hidden" name="stage" value="'+stage+'">
                                             <h3><input type="number" name="score_a" min="0" value="0" required> : <input type="number" name="score_b" min="0" value="0" required></h3>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                             <button type="submit" class="btn btn-primary">Insert</button>

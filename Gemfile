@@ -26,6 +26,7 @@ gem 'devise'
 gem 'bootstrap-sass'
 
 gem 'bcrypt', platforms: :ruby
+gem 'json'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

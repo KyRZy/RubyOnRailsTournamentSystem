@@ -1,5 +1,5 @@
-<div id="tournament-info" data-id="<%= @tournament.id %>"</div>>
-  <h1><strong>Name: </strong><%= @tournament.user.username %></h3>
+<div id="tournament-info" data-id="<%= @tournament.id %>">
+  <h1><strong>Name: </strong><%= @tournament.user.username %></h1>
   <h4><strong>Administrator: </strong><%= @tournament.user.username %></h4>
   <h4><strong>Format: </strong><%= @tournament.tournament_type.name %></h4>
   <h4>
@@ -49,7 +49,12 @@
 <br>
 <%= button_to 'Refresh brackets', update_tournament_brackets_path(@tournament), method: :get, id: 'refresh',class: 'btn btn-primary', remote: true %>
 <br>
-<%= button_to 'Remove all matches (debug button just for development)', remove_all_matches_path(@tournament), method: :post, class: 'btn btn-primary' %>
+<%= button_to 'Remove all matches (debug button just for development purposes)', remove_all_matches_path(@tournament), method: :post, class: 'btn btn-primary' %>
+
+<% if @tournament.user == current_user %>
+ <br>
+  <p style="font-style: italic">( To insert scores, hover over chosen match and click on "Insert score" button)</p>
+<% end %>
 
 <%-# add path to folder with partials and check type of tournament -%>
 <% s = 'tournaments/bracket-partials/'+@tournament.tournament_type.name.downcase %>

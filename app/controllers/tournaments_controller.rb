@@ -107,10 +107,10 @@ class TournamentsController < ApplicationController
 
   def join_tournament
     if current_user.team.leader == current_user
-      participant = Participant.create(tournament_id: @tournament.id,team_id: current_user.team.id)
+      participant = Participant.create(tournament_id: @tournament.id, team_id: current_user.team.id)
       respond_to do |format|
         if participant.save
-          flash[:success] = "Your team successfully join the tournament."
+          flash[:success] = "Your team successfully joined the tournament."
           format.html { redirect_to @tournament}
           format.json { render :show, status: :created, location: @tournament }
         else
@@ -126,7 +126,7 @@ class TournamentsController < ApplicationController
 
   def leave_tournament
     if current_user.team.leader == current_user
-      Participant.where(tournament_id: @tournament.id,team_id: current_user.team.id).first.destroy
+      Participant.where(tournament_id: @tournament.id, team_id: current_user.team.id).first.destroy
       respond_to do |format|
         flash[:success] = 'You successully left the tournament.'
         format.html { redirect_to tournaments_url}

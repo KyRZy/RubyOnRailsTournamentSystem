@@ -7,6 +7,7 @@ class TournamentsController < ApplicationController
   before_action :is_tournament_creator?, only: [:join_tournament]
   before_action :is_tournament_creator_from_the_same_team?, only: [:join_tournament]
   before_action :is_tournament_full?, only: [:join_tournament]
+  before_action :max_participants_options, only: [:new, :edit]
 
   def has_team?
     if current_user.team.nil?
@@ -36,6 +37,10 @@ class TournamentsController < ApplicationController
     end
   end
 
+  def max_participants_options
+    @max_participants_options = [16]
+  end
+
   # GET /tournaments
   # GET /tournaments.json
   def index
@@ -55,7 +60,6 @@ class TournamentsController < ApplicationController
   # GET /tournaments/new
   def new
     @tournament = Tournament.new
-    @max_participants_options = [16]
   end
 
   # GET /tournaments/1/edit

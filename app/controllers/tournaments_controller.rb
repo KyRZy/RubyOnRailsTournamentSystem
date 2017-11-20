@@ -166,6 +166,23 @@ class TournamentsController < ApplicationController
     end
   end
 
+  def insert_match_score
+    @score_a = params[:score_a]
+    @score_b = params[:score_b]
+
+    @stage = params[:stage]
+
+    match = Match.update(params[:match_id], participant_a_score: @score_a, participant_b_score: @score_b)
+
+    if not match
+      @not_saved = true
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def remove_all_matches
     Tournament.transaction do
       @tournament.matches.each do |m|

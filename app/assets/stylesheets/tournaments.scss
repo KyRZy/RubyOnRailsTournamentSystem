@@ -19,6 +19,22 @@ $line-color: #000000;
     position: relative;
 }
 
+.low-opacity{
+    opacity: .5;
+}
+
+#matchScoreModal{
+    .modal-body{
+        text-align: center;
+
+        input[type=number]{
+            width: 50px;
+            font-size: 26px;
+            text-align: center;
+        }
+    }
+}
+
 .brackets{
     display: flex;
     flex-wrap: nowrap;
@@ -32,6 +48,29 @@ $line-color: #000000;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+
+    .match{
+        position: relative;
+        
+        .match-score-button{
+            visibility: hidden;
+            position:absolute;
+            top:50%;
+            left:50%;
+            -webkit-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            opacity: 0;
+            transition: opacity .1s;
+        }
+
+        &:hover{
+            .match-score-button{
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
+
     &:not(:first-child){
         margin-left: 80px;
     }

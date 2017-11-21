@@ -143,6 +143,7 @@ class TournamentsController < ApplicationController
   end
 
   def update_tournament_brackets
+  
     respond_to do |format|
       format.js
     end

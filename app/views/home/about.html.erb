@@ -76,5 +76,12 @@
       LOWER function is available in PostreSQL. That solution allowes to capitalise any part of team's name and at the same time 
       make's it easier to find when someone wants to join existing team.
     </li>
+    <li>
+      Each match has two foreign keys to participants.
+      List of tournament matches is used to for example update brackets, so it's nessesary to go throuth each participant,
+      get all his matches, combine them with other participants' matches and remove repeating matches.
+      Without adictional SQL querry, if new match was created and 1st participant wasn't know (was equal to null),
+      match wouldn't appear in brackets.
+    </li>
   </ul>
 </div>

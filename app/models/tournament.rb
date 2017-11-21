@@ -7,9 +7,7 @@ class Tournament < ApplicationRecord
     belongs_to :user, optional: true
 
     def matches
+        # explained in 3rd point in "Obstacles during implementation" of about page
         Match.find_by_sql('SELECT DISTINCT m.* FROM matches m, participants p, tournaments t WHERE  t.id = p.tournament_id and (p.id = m.participant_a_id or p.id = m.participant_b_id)')
-        
-        #home_matches.or(away_matches) # intersection
-        # or connections_1.or(connections_2) for union
     end
 end

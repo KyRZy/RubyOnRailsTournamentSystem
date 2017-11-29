@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  resources :matches
-  resources :participants
+  resources :matches  
   resources :teams
-  resources :tournaments
+  resources :tournaments do
+    resources :participants
+  end
   devise_for :users
   get 'home/about'
   root 'home#index'

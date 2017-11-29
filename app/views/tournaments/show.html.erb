@@ -26,7 +26,10 @@
                 <% if current_user.present? && participant.team == current_user.team %>
                   <strong><%= participant.team.name %></strong>
                 <% else %>
-                  <%= participant.team.name %>
+                  <%= participant.team.name %> 
+                  <% if @tournament.user == current_user %>
+                    <%= link_to 'Remove', [@tournament,participant], method: :delete, data: { confirm: 'Are you sure?' } %>
+                  <% end %>
                 <% end %>
               </li>
             <% end %>

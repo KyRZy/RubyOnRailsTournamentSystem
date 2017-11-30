@@ -5,8 +5,11 @@
 $ -> 
     if $('.brackets').length
         $('#refresh').click()
-        
-    $('.brackets').on "click", "button.match-score-button", ->
+
+    $("body").on "hidden.bs.modal", "#matchScoreModal", ->
+        $('#matchScoreModal').remove()    
+
+    $(document).on "click", "button.match-score-button", ->
         tournament_id = $("div#tournament-info").data("id")
         match = $(this).parent()
         match_id = $(match).data("match-id")
@@ -35,9 +38,6 @@ $ ->
                             </div>
                           </div>'
         $("#matchScoreModal").modal()
-
-    $(document).on "hidden.bs.modal", "#matchScoreModal", ->
-        $('#matchScoreModal').remove()    
 
     $(document).on "mouseenter", ".team", ->
         if(id = $(this).data("participant-id"))

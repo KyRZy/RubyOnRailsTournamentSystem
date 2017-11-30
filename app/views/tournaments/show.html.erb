@@ -63,7 +63,7 @@
 <%-# add path to folder with partials and check type of tournament -%>
 <% s = 'tournaments/bracket-partials/'+@tournament.tournament_type.name.downcase %>
 <div id="bracket-container">
-  <%= render s[0, s.length - 7], tournament: @tournament %>
+    <%= render s[0, s.length - 7] %> 
 </div>
 
 <% if current_user.present? && current_user.team.present? && current_user.team != @tournament.user.team %>

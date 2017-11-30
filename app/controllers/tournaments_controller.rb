@@ -142,8 +142,7 @@ class TournamentsController < ApplicationController
     end 
   end
 
-  def update_tournament_brackets
-  
+  def update_tournament_brackets  
     respond_to do |format|
       format.js
     end
@@ -181,6 +180,7 @@ class TournamentsController < ApplicationController
 
       match = Match.find(params[:match_id])
       winner = nil
+      loser = nil
       if(@score_a > @score_b)
         winner = match.participant_a
         loser = match.participant_b
@@ -210,6 +210,24 @@ class TournamentsController < ApplicationController
           end
         end
       end
+
+      if next_matches.key?("loser")
+        next_stage_match = @tournament.matches.find {|match| match.stage == next_matches["loser"]["next_stage"]}
+        if next_stage_match.present?
+          if next_matches["loser"]["side"] == "a"
+            Match.update(next_stage_match ,participant_a: loser)
+          else
+            Match.update(next_stage_match, participant_b: loser)
+          end
+        else
+          if next_matches["loser"]["side"] == "a"
+            Match.create(participant_a: loser, stage: next_matches["loser"]["next_stage"])
+          else
+            Match.create(participant_b: loser, stage: next_matches["loser"]["next_stage"])
+          end
+        end
+      end
+
     end
 
     #if not match

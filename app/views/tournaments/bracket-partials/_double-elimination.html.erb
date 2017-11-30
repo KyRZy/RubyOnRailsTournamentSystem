@@ -1,1 +1,61 @@
-<h1>work in progress..</h1>
+<h2>Upper brackets</h2>
+<div class="brackets upper-brackets">
+    <%= render 'tournaments/bracket-partials/single-elimination' %>
+</div>
+<h2>Lower Brackets</h2>
+<div class="brackets lower-brackets">
+    <div class="round">
+        <% for i in 15..18%>
+            <%= render partial:'tournaments/bracket-partials/match', locals: {stage: i, empty: true} %>
+                <%= render partial:'tournaments/bracket-partials/match', locals: {stage: i, empty: false} %>
+                    <% end %>
+    </div>
+    <div class="lines">
+        <% for i in 0..3%>
+            <%= render partial:'tournaments/bracket-partials/lines', locals: {height: 'height:130px'} %>
+                <% end %>
+    </div>
+    <div class="round">
+        <% for i in 19..22%>
+            <%= render partial:'tournaments/bracket-partials/match', locals: {stage: i, empty: false} %>
+                <% end %>
+    </div>
+    <div class="lines">
+        <% for i in 0..1%>
+            <%= render partial:'tournaments/bracket-partials/lines', locals: {height: 'height:195px'} %>
+                <% end %>
+    </div>
+    <div class="round">
+        <% for i in 23..24%>
+            <%= render partial:'tournaments/bracket-partials/match', locals: {stage: i, empty: false} %>
+                <% end %>
+    </div>
+    <div class="lines round3">
+        <% for i in 0..1%>
+            <%= render partial:'tournaments/bracket-partials/lines', locals: {height: 'height:160px'} %>
+                <% end %>
+    </div>
+    <div class="round round4">
+        <% for i in 25..26%>
+            <%= render partial:'tournaments/bracket-partials/match', locals: {stage: i, empty: false} %>
+                <% end %>
+    </div>
+    <div class="lines round4">
+        <%= render partial:'tournaments/bracket-partials/lines', locals: {height: 'height:325px'} %>
+    </div>
+    <div class="round round5">
+        <%= render partial:'tournaments/bracket-partials/match', locals: {stage: 27, empty: false} %>
+    </div>
+    <div class="lines round5">
+        <%= render partial:'tournaments/bracket-partials/lines', locals: {height: 'height:160px'} %>
+    </div>
+    <div class="round round6">
+        <%= render partial:'tournaments/bracket-partials/match', locals: {stage: 28, empty: false} %>
+    </div>
+</div>
+<h2>Championship brackets</h2>
+<div class="brackets championship-brackets">
+    <div class="round">
+        <%= render partial:'tournaments/bracket-partials/match', locals: {stage: 29, empty: false} %>
+    </div>
+</div>

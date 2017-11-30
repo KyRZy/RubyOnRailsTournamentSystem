@@ -6,11 +6,20 @@ $("#refresh").attr("disabled", true);
 <% @tournament.matches.each do |m| %>
     var match = $("div.match[data-stage='<%= m.stage %>']");
 
-    $(match).attr("data-match-id","<%= m.id %>")
+    $(match).attr("data-match-id","<%= m.id %>");
 
-    $(match).find(".team-name").first().html("<%= m.participant_a.present? ? m.participant_a.team.name : 'TBD' %>");
-    $(match).find(".team-name").last().html("<%= m.participant_b.present?  ? m.participant_b.team.name : 'TBD' %>");
+    <% if m.participant_a.present? %>
+        $(match).find(".team").first().attr("data-participant-id", <%= m.participant_a.id %> );
+        $(match).find(".team-name").first().html("<%= m.participant_a.team.name %>");
+    <% end %>
+        
 
+    <% if m.participant_b.present? %>
+        $(match).find(".team").last().attr("data-participant-id", <%= m.participant_b.id %> );
+        $(match).find(".team-name").last().html("<%= m.participant_b.team.name %>");
+    <% end %>      
+
+    
     if( $(match).find('button.match-score-button').length ){
         $(match).find('button.match-score-button').remove();
     }

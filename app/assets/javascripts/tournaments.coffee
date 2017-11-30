@@ -6,7 +6,7 @@ $ ->
     if $('.brackets').length
         $('#refresh').click()
         
-    $(document).on "click", "button.match-score-button", ->
+    $('.brackets').on "click", "button.match-score-button", ->
         tournament_id = $("div#tournament-info").data("id")
         match = $(this).parent()
         match_id = $(match).data("match-id")
@@ -18,9 +18,9 @@ $ ->
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
-                                        <h4 class="modal-title">Insert score</h4>\
-                                    </div>\
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Insert score</h4>
+                                    </div>
                                     <div class="modal-body">
                                         <h3>'+team_a+' : '+team_b+'</h3>
                                         <form action="/tournament/'+tournament_id+'/insert_match_score" method="post" data-remote="true">
@@ -38,3 +38,16 @@ $ ->
 
     $(document).on "hidden.bs.modal", "#matchScoreModal", ->
         $('#matchScoreModal').remove()    
+
+    $(document).on "mouseenter", ".team", ->
+        if(id = $(this).data("participant-id"))
+            $(".brackets .team[data-participant-id="+id+"]").each( ->
+                $(this).addClass("team-hover")            
+            )
+            
+
+    $(document).on "mouseleave", ".team", ->
+        if(id = $(this).data("participant-id"))
+            $(".brackets .team[data-participant-id="+id+"]").each( ->
+                $(this).removeClass("team-hover")            
+            )

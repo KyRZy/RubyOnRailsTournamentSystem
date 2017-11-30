@@ -50,7 +50,7 @@
 <% end %>
 
 <br>
-<%= button_to 'Refresh brackets', update_tournament_brackets_path(@tournament), method: :get, id: 'refresh',class: 'btn btn-primary', remote: true %>
+<%= button_to 'Refresh brackets', update_tournament_brackets_path(@tournament), method: :get, id: 'refresh', class: 'btn btn-primary', remote: true %>
 <br>
 <p style="font-style: italic">(debug button just for development purposes)</p>
 <%= button_to 'Remove all matches', remove_all_matches_path(@tournament), method: :post, class: 'btn btn-primary' %>

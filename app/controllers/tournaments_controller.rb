@@ -150,7 +150,7 @@ class TournamentsController < ApplicationController
 
   def start_tournament
     if @tournament.matches.count == 0
-      Tournament.transaction do
+      Match.transaction do
         participants = @tournament.participants
 
         for i in 0..(@tournament.max_participants/2 - 1)
@@ -176,54 +176,159 @@ class TournamentsController < ApplicationController
     stage = params[:stage]
 
     Match.transaction do
-      Match.update(params[:match_id], participant_a_score: @score_a, participant_b_score: @score_b)
+      match = Match.update(params[:match_id], participant_a_score: @score_a, participant_b_score: @score_b)
 
-      match = Match.find(params[:match_id])
-      winner = nil
-      loser = nil
-      if(@score_a > @score_b)
-        winner = match.participant_a
-        loser = match.participant_b
-      else
-        winner = match.participant_b
-        loser = match.participant_a
-      end
-
-      path = Rails.root.join('app','assets','public', 'matches.json')
-      file = File.read(path)
-      data_hash = JSON.parse(file)
-
-      next_matches = data_hash[@tournament.tournament_type.name][stage]
-      if next_matches.key?("winner")
-        next_stage_match = @tournament.matches.find {|match| match.stage == next_matches["winner"]["next_stage"]}
-        if next_stage_match.present?
-          if next_matches["winner"]["side"] == "a"
-            Match.update(next_stage_match ,participant_a: winner)
-          else
-            Match.update(next_stage_match, participant_b: winner)
-          end
+      if @tournament.tournament_type.name == "Swiss system"
+        
+        if(@score_a > @score_b)
+          match.participant_a.increment!(:wins)
+          match.participant_b.increment!(:losses)
         else
-          if next_matches["winner"]["side"] == "a"
-            Match.create(participant_a: winner, stage: next_matches["winner"]["next_stage"])
-          else
-            Match.create(participant_b: winner, stage: next_matches["winner"]["next_stage"])
+          match.participant_b.increment!(:wins)
+          match.participant_a.increment!(:losses)
+        end
+
+        # count amount of wins to estimate if any of the rounds ended
+        wins = @tournament.participants.map(&:wins).sum
+
+        # if end of round 1
+        if wins == 8
+          best = @tournament.participants.where("wins = 1")
+          worst = @tournament.participants.where("losses = 1")
+
+          # round 2 contains stages from 8 to 15 
+          # to make 4 iterations instead of 8, winners and losers matches are created at the same time
+          # losers matches are on stages 12-15 so offset from value of 1 equast 4
+          for i in 8..11
+            w_participant_a = best.sample
+            best -= [w_participant_a]
+            w_participant_b = best.sample
+            best -= [w_participant_b]
+  
+            Match.create(participant_a: w_participant_a, participant_b: w_participant_b, stage: i)
+
+            l_participant_a = worst.sample
+            worst -= [l_participant_a]
+            l_participant_b = worst.sample
+            worst -= [l_participant_b]
+  
+            Match.create(participant_a: l_participant_a, participant_b: l_participant_b, stage: i+4)
+          end
+        
+        # if end of round 2
+        elsif wins == 16
+          best = @tournament.participants.where("wins = 2")
+          average = @tournament.participants.where("wins = 1")
+          worst = @tournament.participants.where("losses = 2")
+
+          for i in 16..17
+            w_participant_a = best.sample
+            best -= [w_participant_a]
+            w_participant_b = best.sample
+            best -= [w_participant_b]
+  
+            Match.create(participant_a: w_participant_a, participant_b: w_participant_b, stage: i)
+
+            l_participant_a = worst.sample
+            worst -= [l_participant_a]
+            l_participant_b = worst.sample
+            worst -= [l_participant_b]
+  
+            Match.create(participant_a: l_participant_a, participant_b: l_participant_b, stage: i+6)
+          end
+
+          for i in 18..21
+            w_participant_a = average.sample
+            average -= [w_participant_a]
+            w_participant_b = average.sample
+            average -= [w_participant_b]
+  
+            Match.create(participant_a: w_participant_a, participant_b: w_participant_b, stage: i)
+          end
+
+        # if end of round 3
+        elsif wins == 24
+          best = @tournament.participants.where("wins = 2 AND losses = 1")
+          worst = @tournament.participants.where("wins = 1 AND losses = 2")
+
+          for i in 24..26
+            w_participant_a = best.sample
+            best -= [w_participant_a]
+            w_participant_b = best.sample
+            best -= [w_participant_b]
+  
+            Match.create(participant_a: w_participant_a, participant_b: w_participant_b, stage: i)
+
+            l_participant_a = worst.sample
+            worst -= [l_participant_a]
+            l_participant_b = worst.sample
+            worst -= [l_participant_b]
+  
+            Match.create(participant_a: l_participant_a, participant_b: l_participant_b, stage: i+3)
+          end
+
+        # if end of round 4
+        elsif wins == 30
+          remaining = @tournament.participants.where("wins = 2 AND losses = 2")
+
+          for i in 30..32
+            w_participant_a = remaining.sample
+            remaining -= [w_participant_a]
+            w_participant_b = remaining.sample
+            remaining -= [w_participant_b]
+  
+            Match.create(participant_a: w_participant_a, participant_b: w_participant_b, stage: i)
           end
         end
-      end
 
-      if next_matches.key?("loser")
-        next_stage_match = @tournament.matches.find {|match| match.stage == next_matches["loser"]["next_stage"]}
-        if next_stage_match.present?
-          if next_matches["loser"]["side"] == "a"
-            Match.update(next_stage_match ,participant_a: loser)
-          else
-            Match.update(next_stage_match, participant_b: loser)
-          end
+      else
+        # Single and Double elimination
+        winner = nil
+        loser = nil
+        if(@score_a > @score_b)
+          winner = match.participant_a
+          loser = match.participant_b
         else
-          if next_matches["loser"]["side"] == "a"
-            Match.create(participant_a: loser, stage: next_matches["loser"]["next_stage"])
+          winner = match.participant_b
+          loser = match.participant_a
+        end
+  
+        path = Rails.root.join('app','assets','public', 'matches.json')
+        file = File.read(path)
+        data_hash = JSON.parse(file)
+  
+        next_matches = data_hash[@tournament.tournament_type.name][stage]
+        if next_matches.key?("winner")
+          next_stage_match = @tournament.matches.find {|match| match.stage == next_matches["winner"]["next_stage"]}
+          if next_stage_match.present?
+            if next_matches["winner"]["side"] == "a"
+              Match.update(next_stage_match ,participant_a: winner)
+            else
+              Match.update(next_stage_match, participant_b: winner)
+            end
           else
-            Match.create(participant_b: loser, stage: next_matches["loser"]["next_stage"])
+            if next_matches["winner"]["side"] == "a"
+              Match.create(participant_a: winner, stage: next_matches["winner"]["next_stage"])
+            else
+              Match.create(participant_b: winner, stage: next_matches["winner"]["next_stage"])
+            end
+          end
+        end
+  
+        if next_matches.key?("loser")
+          next_stage_match = @tournament.matches.find {|match| match.stage == next_matches["loser"]["next_stage"]}
+          if next_stage_match.present?
+            if next_matches["loser"]["side"] == "a"
+              Match.update(next_stage_match ,participant_a: loser)
+            else
+              Match.update(next_stage_match, participant_b: loser)
+            end
+          else
+            if next_matches["loser"]["side"] == "a"
+              Match.create(participant_a: loser, stage: next_matches["loser"]["next_stage"])
+            else
+              Match.create(participant_b: loser, stage: next_matches["loser"]["next_stage"])
+            end
           end
         end
       end
@@ -243,6 +348,11 @@ class TournamentsController < ApplicationController
     Match.transaction do
       @tournament.matches.each do |m|
         m.destroy
+      end
+    end
+    Participant.transaction do
+      @tournament.participants.each do |p|
+        Participant.update(p.id, wins: 0, losses: 0)
       end
     end
     redirect_to @tournament

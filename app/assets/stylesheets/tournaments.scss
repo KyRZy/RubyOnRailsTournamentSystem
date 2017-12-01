@@ -51,18 +51,6 @@ $line-color: #000000;
     .match{
         position: relative;
         
-        .match-score-button{
-            visibility: hidden;
-            position:absolute;
-            top:50%;
-            left:50%;
-            -webkit-transform: translate(-50%,-50%);
-            transform: translate(-50%,-50%);
-            border: 2px solid $line-color;
-            opacity: 0;
-            transition: opacity .1s;
-        }
-
         &:hover{
             .match-score-button{
                 visibility: visible;
@@ -76,6 +64,18 @@ $line-color: #000000;
     }
 }
 
+.match-score-button{
+    visibility: hidden;
+    position:absolute;
+    top:50%;
+    left:50%;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    border: 2px solid $line-color;
+    opacity: 0;
+    transition: opacity .1s;
+}
+
 .lines{
     display: flex;
     flex-direction: column;
@@ -86,43 +86,46 @@ $line-color: #000000;
     position:relative;
 }
 
-.round3{
-    justify-content: flex-end;
-    .line-set:last-child{
-        margin-top: 100px;
-        margin-bottom: 97px;
+.lower-brackets{
+    .round3{
+        justify-content: flex-end;
+        .line-set:last-child{
+            margin-top: 100px;
+            margin-bottom: 97px;
+        }
     }
-}
-
-.round4{
-    justify-content: flex-end;
-    .match:last-child{
-        margin-top: 200px;
-        margin-bottom: 147px;
+    
+    .round4{
+        justify-content: flex-end;
+        .match:last-child{
+            margin-top: 200px;
+            margin-bottom: 147px;
+        }
+        .line-set{
+            margin-bottom: 145px;
+        }
     }
-    .line-set{
-        margin-bottom: 145px;
+    
+    .round5{
+        .match{
+            margin-bottom: 95px;
+        }
+        .line-set{
+            margin-bottom: 190px;
+        }
     }
-}
-
-.round5{
-    .match{
-        margin-bottom: 95px;
-    }
-    .line-set{
+    
+    .round6 .match{
+        margin-right: 50px;
         margin-bottom: 190px;
     }
-}
-
-.round6 .match{
-    margin-right: 50px;
-    margin-bottom: 190px;
 }
 
 .team{
     overflow: hidden;
     white-space: normal;
     border: 1px solid $line-color;
+    background-color: white;
     height:30px;
     width: 250px;
     font-size: 20px;
@@ -223,4 +226,27 @@ $line-color: #000000;
 .team-hover{
     background-color: #e8f88a;
     font-weight: bold;
+}
+
+.swiss{
+
+    .round{
+        flex-direction: row;
+        justify-content: flex-start;
+        overflow-x: auto;
+
+        .zero-zero{
+            border-radius: 25px;
+            border: 1px solid;
+            padding: 0px 20px 20px;
+            background-color: #cccccc;
+        }
+        .zero-zero:not(:last-child){
+            margin-right: 30px;
+        }
+    }
+
+    .match:not(:last-child){
+        margin-bottom: 10px;
+    }
 }

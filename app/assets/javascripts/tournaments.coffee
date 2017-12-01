@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ -> 
-    if $('.brackets').length
+    if $('#bracket-container').length
         $('#refresh').click()
 
     $("body").on "hidden.bs.modal", "#matchScoreModal", ->

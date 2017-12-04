@@ -230,18 +230,21 @@ $line-color: #000000;
 
 .swiss{
 
-    .round{
-        flex-direction: row;
-        justify-content: flex-start;
-        overflow-x: auto;
+    h2{
+        clear: both;
+    }
 
-        .zero-zero{
+    .round{
+        display: block;
+        .group{
+            width: 295px;
             border-radius: 25px;
             border: 1px solid;
             padding: 0px 20px 20px;
+            margin: auto;
             background-color: #cccccc;
         }
-        .zero-zero:not(:last-child){
+        .group:not(:last-child){
             margin-right: 30px;
         }
     }

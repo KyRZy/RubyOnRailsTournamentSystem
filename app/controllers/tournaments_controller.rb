@@ -345,12 +345,10 @@ class TournamentsController < ApplicationController
   end
 
   def remove_all_matches
-    Match.transaction do
+    Participant.transaction do
       @tournament.matches.each do |m|
         m.destroy
       end
-    end
-    Participant.transaction do
       @tournament.participants.each do |p|
         Participant.update(p.id, wins: 0, losses: 0)
       end

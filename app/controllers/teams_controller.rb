@@ -32,23 +32,24 @@ class TeamsController < ApplicationController
       @team.salt = BCrypt::Engine.generate_salt
       @team.encrypted_password= BCrypt::Engine.hash_secret(params[:password], @team.salt)
       Team.transaction do
+        respond_to do |format|
         if @team.save
           current_user.team_id = @team.id
-          respond_to do |format|
             if current_user.save
               flash[:success] = 'Team was successfully created.'
               format.html { redirect_to root_url}
               format.json { render :show, status: :created, location: @team }
             else
               format.html { render :new }
-              format.json { render json: @team.errors, status: :unprocessable_entity }
+              format.json { render json: current_user.errors, status: :unprocessable_entity }
             end
-          end
         else
           flash[:error] = 'This team name is already taken.'
-          redirect_to new_team_path
+          format.html { render :new }
+          format.json { render json: @team.errors, status: :unprocessable_entity }
         end
       end
+    end
     else
       flash[:error] = 'Password and password confirmation don\'t match.'
       redirect_to new_team_path

@@ -293,7 +293,7 @@ class TournamentsController < ApplicationController
           loser = match.participant_a
         end
   
-        path = Rails.root.join('app','assets','public', 'matches.json')
+        path = Rails.public_path.join('matches.json')
         file = File.read(path)
         data_hash = JSON.parse(file)
   
